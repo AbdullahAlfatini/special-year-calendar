@@ -212,80 +212,44 @@ document.addEventListener('DOMContentLoaded', () => {
         entryDrawer.classList.add('hidden');
     });
 
-    // Handle Form Submission
-    milestoneForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        const dateVal = document.getElementById('eventDate').value;
-        const titleVal = document.getElementById('eventTitle').value.trim();
-        const contextVal = document.getElementById('eventContext').value.trim();
+  // Handle Form Submission
+milestoneForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-        if (!dateVal || !titleVal) return;
+    const dateVal = document.getElementById('eventDate').value;
+    const titleVal = document.getElementById('eventTitle').value.trim();
+    const contextVal = document.getElementById('eventContext').value.trim();
 
-        // UI Loading State
-        submitBtn.disabled = true;
-        const btnText = submitBtn.querySelector('.btn-text');
-        btnText.textContent = "Weaving Poem Note...";
+    if (!dateVal || !titleVal) return;
 
-        try {
-            const resp = await fetch('/api/generate', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    date: dateVal,
-                    title: titleVal,
-                    context: contextVal
-                })
-            });
+    const btnText = submitBtn.querySelector('.btn-text');
+    if (btnText) btnText.textContent = "Weaving Poem Note...";
 
-            let poemNote = "A special day held in quiet warmth, shining softly through the turning year.";
-            let season = "spring";
+    // إنشاء العنصر وتحديث التخزين والتقويم
+    const newEntry = {
+        id: 'entry-' + Date.now(),
+        date: dateVal,
+        title: titleVal,
+        context: contextVal,
+        poemNote: `A glowing memory recorded for ${titleVal}.`,
+        season: "autumn"
+    };
 
-            if (resp.ok) {
-                const data = await resp.json();
-                if (data.poemNote) poemNote = data.poemNote;
-                if (data.season) season = data.season;
-            }
+    const milestones = getStoredMilestones();
+    milestones.push(newEntry);
+    saveStoredMilestones(milestones);
 
-            const newMilestone = {
-                id: 'm-' + Date.now(),
-                date: dateVal,
-                title: titleVal,
-                context: contextVal,
-                poemNote: poemNote,
-                season: season
-            };
+    if (typeof renderCalendar === 'function') {
+        renderCalendar();
+    }
 
-            const milestones = getStoredMilestones();
-            milestones.push(newMilestone);
-            saveStoredMilestones(milestones);
-
-            // Reset Form & Close Drawer
-            milestoneForm.reset();
-            entryDrawer.classList.add('hidden');
-
-            renderCalendar();
-
-            // Auto-scroll to target month
-            const monthNum = parseInt(dateVal.split('-')[1], 10) - 1;
-            const targetMonthCard = document.querySelector(`.month-card[data-month="${monthNum}"]`);
-            if (targetMonthCard) {
-                targetMonthCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
-
-            // Open the new poem modal immediately
-            setTimeout(() => {
-                openPoemModal(newMilestone);
-            }, 500);
-
-        } catch (err) {
-            console.error("Error generating poem note:", err);
-        } finally {
-            submitBtn.disabled = false;
-            btnText.textContent = "Generate Poem Note";
-        }
-    });
-
-    // Initialize View
-    renderCalendar();
+    // إعادة ضبط الزر والنموذج
+    if (btnText) btnText.textContent = "Generate Poem Note";
+    submitBtn.disabled = false;
+    
+    if (entryDrawer) {
+        entryDrawer.classList.add('hidden');
+    }
+    
+    milestoneForm.reset();
 });
