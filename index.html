@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Special Year Calendar — A Year in Poetry</title>
+    <meta name="description" content="A scrollable 12-month personal calendar enriched with warm AI poem notes for your special milestones.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="background-ambient">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+    </div>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-brand">
+                <span class="sparkle-icon">✨</span>
+                <div>
+                    <h1>My Special Year</h1>
+                    <p class="subtitle">A Year Laid Out Like a Poem</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button id="toggleFormBtn" class="btn btn-primary" aria-label="Add personal date milestone">
+                    <span class="btn-icon">+</span> Add Milestone
+                </button>
+            </div>
+        </header>
+
+        <!-- Milestone Entry Drawer -->
+        <div id="entryDrawer" class="entry-drawer hidden">
+            <div class="drawer-content glass-card">
+                <div class="drawer-header">
+                    <h2>Illuminate a Date</h2>
+                    <button id="closeDrawerBtn" class="btn-close" aria-label="Close entry form">&times;</button>
+                </div>
+                <form id="milestoneForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="eventDate">Select Date</label>
+                            <input type="date" id="eventDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventTitle">Milestone Title</label>
+                            <input type="text" id="eventTitle" placeholder="e.g. Mom's 60th Birthday" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventContext">Personal Detail / Memory (Optional)</label>
+                        <input type="text" id="eventContext" placeholder="e.g. Loves autumn leaves & gardening">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" id="submitBtn" class="btn btn-glow">
+                            <span class="btn-text">Generate Poem Note</span>
+                            <span class="btn-spinner hidden"></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Year Calendar Grid -->
+        <main class="calendar-wrapper">
+            <div id="calendarGrid" class="calendar-grid">
+                <!-- 12 Month cards will be dynamically rendered here -->
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p class="footer-tagline">Crafted for quiet solo reflection &bull; Saved locally on your device</p>
+            <div class="developer-credit glass-card">
+                <span>Developed by <a href="https://www.linkedin.com/in/abdullah-alfatini-151003338" target="_blank" rel="noopener noreferrer" class="dev-link"><strong>Eng. Abdullah Zuhair Al-Fatini 🚀</strong></a></span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Poetic Date Card Modal -->
+    <div id="poemModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-card glass-card">
+            <button id="closeModalBtn" class="btn-close modal-close" aria-label="Close modal">&times;</button>
+            <div class="modal-badge" id="modalSeasonBadge">🍂 Autumn</div>
+            <h3 id="modalTitle" class="modal-date-title">Date Title</h3>
+            <p id="modalDateStr" class="modal-date-sub">October 14, 2026</p>
+            
+            <div class="poem-divider">
+                <span>✦</span>
+            </div>
+
+            <blockquote id="modalPoemText" class="poem-body">
+                Loading your poem note...
+            </blockquote>
+
+            <div class="modal-footer">
+                <button id="deleteEntryBtn" class="btn-danger-link">Delete Milestone</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
